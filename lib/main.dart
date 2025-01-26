@@ -1,6 +1,10 @@
 
+import 'package:app2flutter/componentes/titulos.dart';
 import 'package:flutter/material.dart';
-import './componentes/transacaousuario.dart';
+
+import './componentes/lista_transacao.dart';
+import './modelos/transacao.dart';
+import 'dart:math';
 //a
 main() => runApp(AppGestao());
 
@@ -11,8 +15,47 @@ class AppGestao extends StatelessWidget {
   }
 }
 
-class MyHome extends StatelessWidget {
+class MyHome extends StatefulWidget {
 
+  @override
+  State<MyHome> createState() => _MyHomeState();
+}
+
+class _MyHomeState extends State<MyHome> {
+  
+  final transacao = [
+    Transacao(
+      id: 't1',
+      title: 'novo tenis de corridda',
+      value: 361.45,
+      date: DateTime.now(),
+    ),
+    Transacao(
+      id: 't2',
+      title: 'conta luz',
+      value: 31.45,
+      date: DateTime.now(),
+    ),
+  ];
+ 
+       adicionarTransacao(String titulo, double valor){
+          final novaTransacao = Transacao(
+            id: Random().nextDouble().toString(), 
+            title: titulo,
+            value: valor, 
+            date: DateTime.now(),
+          );
+          setState(() {
+            transacao.add(novaTransacao);
+          });
+        
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {return Titulos(adicionarTransacao);}
+        ); 
+      }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +63,16 @@ class MyHome extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.lightGreen,
         title: Text('Despesas Pessoais'),
+        actions: [
+          IconButton(
+             icon: Icon(Icons.add),
+              onPressed: () {}
+        
+        )
+       ],
       ),
       body: SingleChildScrollView(
+        
         child: Column(
          
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -33,11 +84,23 @@ class MyHome extends StatelessWidget {
                 child: Center(child: Text("Grafico", style: TextStyle())),
               ),
             ),
-          
-            TransacaoUsuario(),
+        
+          Column(
+          children: [
+          Titulos(adicionarTransacao),
+          ListaTransacao(transacao),
           ],
          ),
+        
+        ],
+       ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {}
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ); 
+      
      }
-    }
+}
