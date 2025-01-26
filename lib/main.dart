@@ -1,17 +1,35 @@
 
 import 'package:app2flutter/componentes/titulos.dart';
 import 'package:flutter/material.dart';
-
 import './componentes/lista_transacao.dart';
 import './modelos/transacao.dart';
 import 'dart:math';
 //a
 main() => runApp(AppGestao());
 
+
+
 class AppGestao extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: MaterialApp(home: MyHome()));
+    return MaterialApp(
+      home: MyHome(),
+      theme: ThemeData(
+        fontFamily: 'Oswald',
+        useMaterial3: false,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.black,
+        ),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.lightGreen,
+          primary: Colors.green,
+          secondary: Colors.lightGreenAccent,
+          
+        ),
+      ),
+    );
   }
 }
 
@@ -48,25 +66,28 @@ class _MyHomeState extends State<MyHome> {
           setState(() {
             transacao.add(novaTransacao);
           });
-        
+          Navigator.of(context).pop();
+       }
 
-    showModalBottomSheet(
-      context: context,
-      builder: (_) {return Titulos(adicionarTransacao);}
-        ); 
-      }
+      _abrindoModal(BuildContext context){
+        showModalBottomSheet(
+          context: context,
+          builder: (_) {return Titulos(adicionarTransacao);}
+            ); 
+          }
+         
+      
   
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.lightGreen,
         title: Text('Despesas Pessoais'),
         actions: [
           IconButton(
              icon: Icon(Icons.add),
-              onPressed: () {}
+              onPressed: () => _abrindoModal(context),
         
         )
        ],
@@ -80,14 +101,14 @@ class _MyHomeState extends State<MyHome> {
             Padding(
               padding: const EdgeInsets.only(top: 40.0),
               child: Card(
-                color: Colors.green,
-                child: Center(child: Text("Grafico", style: TextStyle())),
+                child: Center(child: Text("Grafico", style: TextStyle())
+                ),
               ),
             ),
         
           Column(
           children: [
-          Titulos(adicionarTransacao),
+          
           ListaTransacao(transacao),
           ],
          ),
@@ -97,7 +118,7 @@ class _MyHomeState extends State<MyHome> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {}
+        onPressed: () => _abrindoModal(context),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ); 
