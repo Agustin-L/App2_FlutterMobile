@@ -13,7 +13,22 @@ class ListaTransacao extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 300,
-      child: ListView.builder(
+      child: transacao.isEmpty ? Column(
+        children: [
+          Text(
+            'Nenhuma trasação Cadastrada!',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          SizedBox(height: 20,),
+          Container(
+            height: 200,
+            child: Image.asset('assets/images/50098.png',
+            fit: BoxFit.cover,
+            ),
+          )
+        ],
+      ):
+      ListView.builder(
         itemCount: transacao.length,
         itemBuilder: (ctx,index){
 

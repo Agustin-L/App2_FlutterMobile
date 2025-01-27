@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import './componentes/lista_transacao.dart';
 import './modelos/transacao.dart';
 import 'dart:math';
+import './componentes/grafico.dart';
 //a
+
+
+
 main() => runApp(AppGestao());
 
 
@@ -14,11 +18,14 @@ class AppGestao extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: MyHome(),
       theme: ThemeData(
+        
         fontFamily: 'Oswald',
         useMaterial3: false,
         appBarTheme: AppBarTheme(
+          
           backgroundColor: Colors.green,
           foregroundColor: Colors.black,
         ),
@@ -26,7 +33,7 @@ class AppGestao extends StatelessWidget {
           seedColor: Colors.lightGreen,
           primary: Colors.green,
           secondary: Colors.lightGreenAccent,
-          
+
         ),
       ),
     );
@@ -34,28 +41,41 @@ class AppGestao extends StatelessWidget {
 }
 
 class MyHome extends StatefulWidget {
-
   @override
   State<MyHome> createState() => _MyHomeState();
 }
 
 class _MyHomeState extends State<MyHome> {
-  
-  final transacao = [
-    Transacao(
-      id: 't1',
-      title: 'novo tenis de corridda',
-      value: 361.45,
-      date: DateTime.now(),
-    ),
-    Transacao(
-      id: 't2',
-      title: 'conta luz',
-      value: 31.45,
-      date: DateTime.now(),
-    ),
-  ];
- 
+
+    final List <Transacao> transacao = [
+       Transacao(
+         id: 't0',
+         title: 'conta antiga',
+         value: 21.00,
+         date: DateTime.now().subtract(Duration(days: 3)),
+       ),
+       Transacao(
+         id: 't1',
+         title: 'novo tenis de corridda',
+         value: 361.45,
+         date: DateTime.now().subtract(Duration(days: 3)),
+       ),
+       Transacao(
+         id: 't2',
+         title: 'conta luz',
+         value: 31.45,
+         date: DateTime.now().subtract(Duration(days: 4)),
+       ),
+    ];
+    
+    List<Transacao> get recentesTransacoes {
+        return transacao.where((tr) {
+          return tr.date.isAfter(DateTime.now().subtract(
+            Duration(days: 7),
+            ));
+      }).toList();
+    }
+
        adicionarTransacao(String titulo, double valor){
           final novaTransacao = Transacao(
             id: Random().nextDouble().toString(), 
@@ -92,27 +112,14 @@ class _MyHomeState extends State<MyHome> {
         )
        ],
       ),
+
       body: SingleChildScrollView(
-        
         child: Column(
-         
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0),
-              child: Card(
-                child: Center(child: Text("Grafico", style: TextStyle())
-                ),
-              ),
-            ),
         
-          Column(
-          children: [
-          
-          ListaTransacao(transacao),
-          ],
-         ),
-        
+        Grafico(recentesTransacoes),
+        ListaTransacao(transacao),
         ],
        ),
       ),
