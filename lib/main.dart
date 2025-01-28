@@ -21,13 +21,11 @@ class AppGestao extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: MyHome(),
       theme: ThemeData(
-        
         fontFamily: 'Oswald',
         useMaterial3: false,
         appBarTheme: AppBarTheme(
-          
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.black,
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.black,
         ),
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.lightGreen,
@@ -95,10 +93,7 @@ class _MyHomeState extends State<MyHome> {
           builder: (_) {return Titulos(adicionarTransacao);}
             ); 
           }
-         
-      
-  
-
+        
   @override
   Widget build(BuildContext context) {
     return Scaffold(
