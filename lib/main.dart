@@ -64,6 +64,17 @@ class _MyHomeState extends State<MyHome> {
          value: 31.45,
          date: DateTime.now().subtract(Duration(days: 4)),
        ),
+       Transacao(
+         id: 't3',
+         title: 'conta internet',
+         value: 161.80,
+         date: DateTime.now(),
+       ),Transacao(
+         id: 't4',
+         title: 'Petshop',
+         value: 60.60,
+         date: DateTime.now(),
+       ),
     ];
     
     List<Transacao> get recentesTransacoes {

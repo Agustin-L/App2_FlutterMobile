@@ -15,8 +15,11 @@ class BarraGrafico extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        FittedBox(
-          child: Text('R\$${value.toStringAsFixed(2)}')),
+        Container(
+          height: 20,
+          child: FittedBox(
+            child: Text('R\$${value.toStringAsFixed(2)}')),
+        ),
         SizedBox(height: 5),
         Container(
           height: 60,

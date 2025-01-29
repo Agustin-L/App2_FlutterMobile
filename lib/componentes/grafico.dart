@@ -31,7 +31,7 @@ class Grafico extends StatelessWidget {
         'day': DateFormat.E().format(diaSemana)[0],
         'value': totalS,
       };
-    });
+    }).reversed.toList();
   }
 
   double get valorTotalSemana {
