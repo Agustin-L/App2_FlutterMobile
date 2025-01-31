@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Titulos extends StatefulWidget {
-  final void Function(String, double) transferindo;
+  final void Function(String, double, DateTime) transferindo;
 
   Titulos(this.transferindo);
 
@@ -10,9 +11,25 @@ class Titulos extends StatefulWidget {
 }
 
 class _TitulosState extends State<Titulos> {
-  final tituloControle = TextEditingController();
-
+  final _tituloControle = TextEditingController();
   final valorControle = TextEditingController();
+  DateTime _selecDate = DateTime.now();
+
+  _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2025),
+      lastDate: DateTime.now(),
+    ).then((pickDate) {
+      if (pickDate == null) {
+        return;
+      }
+      setState(() {
+        _selecDate = pickDate;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +40,7 @@ class _TitulosState extends State<Titulos> {
         child: Column(
           children: [
             TextField(
-              controller: tituloControle,
+              controller: _tituloControle,
               decoration: InputDecoration(labelText: 'Titulo'),
             ),
             TextField(
@@ -37,25 +54,32 @@ class _TitulosState extends State<Titulos> {
               height: 70,
               child: Row(
                 children: [
-                  Text('Nenhuma data selecionada!'),
-                  ElevatedButton( 
-                    onPressed: () {},
+                  Expanded(
+                    child: Text(
+                      _selecDate == null
+                          ? 'Nenhuma data selecionada!'
+                          : 'Data Selecionada: ${DateFormat('dd/MM/y').format(_selecDate)}',
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: _showDatePicker,
                     style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(0, 0, 0, 0)),
-                    child: Text('Selecionar Data',
-                    style: TextStyle(
-                    fontWeight: FontWeight.bold, 
-                    color: Colors.black),),
+                        backgroundColor: const Color.fromARGB(0, 0, 0, 0)),
+                    child: Text(
+                      'Selecionar Data',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          final titulo = tituloControle.text;
-                          final valor =
-                              double.tryParse(valorControle.text) ?? 0.0;
-                          widget.transferindo(titulo, valor);
+                          final titulo = _tituloControle.text;
+                          final valor = double.tryParse(valorControle.text) ?? 0.0;
+                         
+                          widget.transferindo(titulo, valor, _selecDate);
                         },
                         child: Text(
                           'Nova transação',

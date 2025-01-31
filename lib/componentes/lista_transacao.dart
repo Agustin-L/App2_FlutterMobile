@@ -4,8 +4,9 @@ import '../modelos/transacao.dart';
 
 class ListaTransacao extends StatelessWidget {
   List<Transacao> transacao;
-
-  ListaTransacao(this.transacao);
+  final void Function(String) onRemove;
+  
+  ListaTransacao(this.transacao, this.onRemove);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,6 @@ class ListaTransacao extends StatelessWidget {
               itemCount: transacao.length,
               itemBuilder: (ctx, index) {
                 final tr = transacao[index];
-
                 return Card(
                   elevation: 5,
                   margin: EdgeInsets.symmetric(
@@ -42,25 +42,27 @@ class ListaTransacao extends StatelessWidget {
                     horizontal: 5,
                   ),
                   child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30,
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: FittedBox(
-                        child: Text('R\$${tr.value}'),
+                      leading: CircleAvatar(
+                        radius: 30,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: FittedBox(
+                            child: Text('R\$${tr.value}'),
+                          ),
                         ),
                       ),
-                    ),
-                    title: Text(
-                      tr.title,
-                      //style: Theme.of(context),
-                    ),
-                    subtitle: Text(
-                      DateFormat('d MM y').format(tr.date),
-                  
-                    ),
-                    //trailing: ,
-                  ),
+                      title: Text(
+                        tr.title,
+                        //style: Theme.of(context),
+                      ),
+                      subtitle: Text(
+                        DateFormat('d MM y').format(tr.date),
+                      ),
+                      trailing: IconButton(
+                        onPressed: () => onRemove (tr.id),
+                        icon: Icon(Icons.delete),
+                        color: Theme.of(context).colorScheme.error,
+                      )),
                 );
               },
             ),

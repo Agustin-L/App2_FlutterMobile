@@ -2,7 +2,7 @@ import 'package:app2flutter/componentes/barraGrafico.dart';
 import 'package:app2flutter/modelos/transacao.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'barraGrafico.dart';
+
 
 class Grafico extends StatelessWidget {
   final List<Transacao> recentesTransacoes;
@@ -56,7 +56,7 @@ class Grafico extends StatelessWidget {
               child: BarraGrafico(
                 tr['day'].toString(),
                 tr['value'] as double,
-                (tr['value'] as double) / valorTotalSemana,
+                valorTotalSemana == 0 ? 0 : (tr['value'] as double) / valorTotalSemana,
               ),
             );
           }).toList(),
