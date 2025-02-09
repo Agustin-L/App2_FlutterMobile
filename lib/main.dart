@@ -37,6 +37,8 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
+  bool _showChart = false;
+
   final List<Transacao> transacao = [];
 
   List<Transacao> get recentesTransacoes {
@@ -78,22 +80,54 @@ class _MyHomeState extends State<MyHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Despesas Pessoais'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _abrindoModal(context),
-          )
-        ],
+    bool isLandscape = MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      title: Text(
+        'Despesas Pessoais',
+        style: TextStyle(
+          fontSize: 20 * MediaQuery.of(context).textScaler.scale(1),
+        ),
       ),
+      actions: [
+        if(isLandscape)
+         IconButton(
+          icon: Icon(_showChart ? Icons.list : Icons.pie_chart),
+          onPressed: () {
+            setState(() {
+              _showChart = !_showChart;
+            });
+         
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _abrindoModal(context),
+        )
+       
+      ],
+    );
+
+    final availableHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Grafico(recentesTransacoes),
-            ListaTransacao(transacao, _removeTransaction),
+           
+           if (_showChart || !isLandscape)
+              Container(
+                height: availableHeight * (isLandscape ? 0.7 : 0.25),
+                child: Grafico(recentesTransacoes),
+              ),
+            Container(
+              height: availableHeight * 0.75,
+              child: ListaTransacao(transacao, _removeTransaction),
+            ),
           ],
         ),
       ),
